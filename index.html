@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="game.css">
+    <title>Document</title>
+    
+</head>
+<body>
+    <div>
+        <h1 id="instructions">Welcome to the Memory Game! Click on the Start button to start!</h1>
+    </div>
+
+    <div id="main">
+        <div id="namesBar" class="sidebar">
+            <button>Brother</button>
+            <button>Grandchild</button>
+            <button>Grandchild</button>
+            <button>Neice</button>
+            <button>Neice</button>
+            <button>Nephew</button>
+            <button>Neice</button>
+            <button>Nephew</button>
+            <button>Sister</button>
+        </div>
+        <div class="row">
+            <div class="column">
+                <div class="image">
+                    <img id="brother_img" src="photos/brother.jpg" alt="brother" style="object-position: 0 60%;">
+                    <div class = caption>
+                        <div class="relationship">Brother</div>
+                        <div class="name">Joe</div>
+                    </div>
+                </div>
+                <div class="image">
+                    <img id="neice1_img" src="photos/neice1.jpg" alt="neice1" style="object-position: 0 20%;">
+                    <div class = caption>
+                        <div class="relationship">Neice</div>
+                        <div class="name">Janice</div>
+                    </div>
+                </div>
+                <div class="image">
+                    <img id="neice2_img" src="photos/neice2.jpg" alt="neice2" style="object-position: 0 40%;"">
+                    <div class = caption>
+                        <div class="relationship">Neice</div>
+                        <div class="name">Jessica</div>
+                    </div>
+                </div>
+                    
+            </div>
+            <div class="column">
+                <div class="image">
+                    <img id="grandchild1_img" src="photos/grandchild1.jpg" alt="grandchild1" style="object-position: 0 60%;">
+                    <div class = caption>
+                        <div class="relationship">Grandchild</div>
+                        <div class="name">Jacob</div>
+                        
+                    </div>
+                </div>
+                <div class="image">
+                    <img id="neice3_img" src="photos/neice3.jpg" alt="neice3">
+                    <div class = caption>
+                        <div class="relationship">Neice</div>
+                        <div class="name">Joane</div>
+                    </div>
+                </div>
+                <div class="image">
+                    <img id="nephew1_img" src="photos/nephew1.jpg" alt="nephew1" style="object-position: 0 30%;">
+                    <div class = caption>
+                        <div class="relationship">Nephew</div>
+                        <div class="name">Jordan</div>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="image">
+                    <img id="grandchild2_img" src="photos/grandchild2.jpg" alt="grandchild2" style="object-position: 0 15%;">
+                    <div class = caption>
+                        <div class="relationship">Grandchild</div>
+                        <div class="name">Jeffery</div>
+                    </div>
+                </div>
+                <div class="image">
+                    <img id="nephew2_img" src="photos/nephew2.jpg" alt="nephew2" style="object-position: 0 10%">
+                    <div class = caption>
+                        <div class="relationship">Nephew</div>
+                        <div class="name">Jim</div>
+                    </div>
+                </div>
+                <div class="image">
+                    <img id="sister_img" src="photos/sister.jpg" alt="sister" style="object-position: 0 10%;">
+                    <div class = caption>
+                        <div class="relationship">Sister</div>
+                        <div class="name">Julia</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="relationshipsBar" class="sidebar">
+            <button>Joe</button>
+            <button>Jacob</button>
+            <button>Jeffery</button>
+            <button>Janice</button>
+            <button>Joane</button>
+            <button>Jim</button>
+            <button>Jessica</button>
+            <button>Jordan</button>
+            <button>Julia</button>
+        </div>
+    </div>
+
+ 
+
+
+    <div class="buttonRow">
+        <button id="resetButton" onclick="Reset()" disabled=true>
+            Reset
+        </button>
+        <button id="startButton" onclick="StartGame()">
+            Start Game
+        </button>
+        <button id="showHints" onclick="EnableMouseOver(); DisableShowHints(); EnableHideHints()">
+            Show Hints
+        </button>
+        <button id="hideHints" onclick="DisableMouseOver(); DisableHideHints(); EnableShowHints()">
+            Hide Hints
+        </button>
+        
+    </div>
+    
+    <script>
+        DisableShowHints();
+        EnableMouseOver();
+        var isRelationshipClicked = false;
+        var isNameClicked = false;
+        var relationshipClicked = "";
+        var nameClicked = "";
+
+        function handleGameClick()
+        {
+            
+        }
+
+        function StartGame() {
+            GameInstructions();
+            DisableStartButton();
+            EnableResetButton();
+            DisplaySideBars();
+            DisableMouseOver();
+            DisableShowHints()
+            DisableHideHints();
+        }
+
+        function Reset() {
+            DisableResetButton();
+            EnableStartButton();
+            StartInstructions();
+            HideSideBars();
+            DisableShowHints();
+            EnableHideHints();
+            EnableMouseOver();
+        }
+
+        function HideSideBars() {
+            var sideBars = document.getElementsByClassName("sidebar");
+            for(var i = 0; i<sideBars.length; i++)
+            {
+                sideBars[i].style.display = "none";
+            }
+        }
+
+        function DisplaySideBars() {
+            var sideBars = document.getElementsByClassName("sidebar");
+            for(var i = 0; i<sideBars.length; i++)
+            {
+                sideBars[i].style.display = "flex";
+            }
+        }
+
+        function StartInstructions() {
+            document.getElementById("instructions").innerHTML = "Welcome to the Memory Game! Click on the Start button to start!";
+        }
+
+        function EnableStartButton() {
+            document.getElementById("startButton").disabled = false;
+        }
+
+        function DisableResetButton() {
+            document.getElementById("resetButton").disabled = true;
+        }
+        
+        function EnableResetButton() {
+            document.getElementById("resetButton").disabled = false;
+        }
+
+        function DisableStartButton() {
+            document.getElementById("startButton").disabled = true;
+        }
+
+        function DisableShowHints() {
+            document.getElementById("showHints").disabled = true;
+        }
+
+        function EnableShowHints() {
+            document.getElementById("showHints").disabled = false;
+        }
+
+        function DisableHideHints() {
+            document.getElementById("hideHints").disabled = true;
+        }
+
+        function EnableHideHints() {
+            document.getElementById("hideHints").disabled = false;
+        }
+
+        function GameInstructions() {
+            document.getElementById("instructions").innerHTML = "Game has started!";
+        }
+
+        function ShowRelationship() {
+            this.nextElementSibling.style.color = "black";
+        }
+
+        function HideRelationship() {
+            this.nextElementSibling.style.color = "white";
+        }
+
+        function EnableMouseOver()
+        {
+            var images = document.getElementsByTagName("img");
+            for(var i=0;i<images.length;i++)
+            {
+                images[i].addEventListener("mouseenter", ShowRelationship);
+                images[i].addEventListener("mouseleave", HideRelationship);
+
+            }
+        }
+
+        function DisableMouseOver()
+        {
+            var images = document.getElementsByTagName("img");
+            for(var i=0;i<images.length;i++)
+            {
+                images[i].removeEventListener("mouseenter", ShowRelationship);
+                images[i].removeEventListener("mouseleave", HideRelationship);
+
+            }
+        }
+        
+
+    </script>
+
+</body>
+</html>
