@@ -13,16 +13,16 @@
     </div>
 
     <div id="main">
-        <div id="namesBar" class="sidebar">
-            <button>Brother</button>
-            <button>Grandchild</button>
-            <button>Grandchild</button>
-            <button>Neice</button>
-            <button>Neice</button>
-            <button>Nephew</button>
-            <button>Neice</button>
-            <button>Nephew</button>
-            <button>Sister</button>
+        <div id="relationshipsBar" class="sidebar">
+            <button id="brotherButton" class="relationshipButton" onclick="relationshipButtonClicked=this; MakeSelection(this); MakeSelection(this)">Brother</button>
+            <button id="grandchild1Button" class="relationshipButton" onclick="relationshipButtonClicked=this; MakeSelection(this)">Grandchild</button>
+            <button id="grandchild2Button" class="relationshipButton" onclick="relationshipButtonClicked=this; MakeSelection(this)">Grandchild</button>
+            <button id="neice1Button" class="relationshipButton" onclick="relationshipButtonClicked=this; MakeSelection(this)">Neice</button>
+            <button id="neice2Button" class="relationshipButton" onclick="relationshipButtonClicked=this; MakeSelection(this)">Neice</button>
+            <button id="nephew1Button" class="relationshipButton" onclick="relationshipButtonClicked=this; MakeSelection(this)">Nephew</button>
+            <button id="neice2Button" class="relationshipButton" onclick="relationshipButtonClicked=this; MakeSelection(this)">Neice</button>
+            <button id="nephew2Button" class="relationshipButton" onclick="relationshipButtonClicked=this; MakeSelection(this)">Nephew</button>
+            <button id="sisterButton" class="relationshipButton" onclick="relationshipButtonClicked=this; MakeSelection(this)">Sister</button>
         </div>
         <div class="row">
             <div class="column">
@@ -98,16 +98,16 @@
                 </div>
             </div>
         </div>
-        <div id="relationshipsBar" class="sidebar">
-            <button>Joe</button>
-            <button>Jacob</button>
-            <button>Jeffery</button>
-            <button>Janice</button>
-            <button>Joane</button>
-            <button>Jim</button>
-            <button>Jessica</button>
-            <button>Jordan</button>
-            <button>Julia</button>
+        <div id="namesBar" class="sidebar">
+            <button id="joeButton" class="nameButton" onclick="nameButtonClicked=this; MakeSelection(this)">Joe</button>
+            <button id="jacobButton" class="nameButton" onclick="nameButtonClicked=this; MakeSelection(this)">Jacob</button>
+            <button id="jefferyButton" class="nameButton" onclick="nameButtonClicked=this; MakeSelection(this)">Jeffery</button>
+            <button id="janiceButton" class="nameButton" onclick="nameButtonClicked=this; MakeSelection(this)">Janice</button>
+            <button id="joaneButton" class="nameButton" onclick="nameButtonClicked=this; MakeSelection(this)">Joane</button>
+            <button id="jimButton" class="nameButton" onclick="nameButtonClicked=this; MakeSelection(this)">Jim</button>
+            <button id="jessicaButton" class="nameButton" onclick="nameButtonClicked=this; MakeSelection(this)">Jessica</button>
+            <button id="jordanButton" class="nameButton" onclick="nameButtonClicked=this; MakeSelection(this)">Jordan</button>
+            <button id="juliaButton" class="nameButton" onclick="nameButtonClicked=this; MakeSelection(this)">Julia</button>
         </div>
     </div>
 
@@ -115,61 +115,65 @@
 
 
     <div class="buttonRow">
-        <button id="resetButton" onclick="Reset(images)" disabled=true>
+        <button id="resetButton" onclick="Reset()" disabled=true>
             Reset
         </button>
-        <button id="startButton" onclick="StartGame(images)">
+        <button id="startButton" onclick="SetupGame()">
             Start Game
         </button>
-        <button id="showHints" onclick="EnableMouseOver(images); DisableShowHints(); EnableHideHints()">
+        <button id="showHints" onclick="EnableMouseOver(); DisableShowHints(); EnableHideHints()">
             Show Hints
         </button>
-        <button id="hideHints" onclick="DisableMouseOver(images); DisableHideHints(); EnableShowHints()">
+        <button id="hideHints" onclick="DisableMouseOver(); DisableHideHints(); EnableShowHints()">
             Hide Hints
+        </button>
+        <button id="checkAnswer" onclick="CheckAnswer()">
+            Check Answer
         </button>
         
     </div>
     
     <script>
         var images = document.getElementsByTagName("img");
+        var relationshipButtonClicked;
+        var nameButtonClicked;
         DisableShowHints();
-        EnableMouseOver(images);
-        
-        function RunGame(images) {
-            var isRelationshipClicked = false;
-            var isNameClicked = false;
-            var relationshipClicked = "";
-            var nameClicked = "";
+        DisableCheckAnswer();
+        EnableMouseOver();
 
-            for(image of images) {
-                BlurOtherImages(image);
-
+        function MakeSelection(buttonClicked) {
+            if(buttonClicked.disabled == false) {
+                buttonClicked.disabled = true;
+                var buttons = document.getElementsByClassName(buttonClicked.className);
+                for(button of buttons) {
+                    if(button != buttonClicked) {
+                        button.disabled = false;
+                    }
+                }
             }
         }
 
-        function StartGame(images) {
-            SetupGame(images);
-            RunGame(images);
-        }
-
-        function Reset(images) {
+        function Reset() {
             DisableResetButton();
             EnableStartButton();
             StartInstructions();
             HideSideBars();
             DisableShowHints();
             EnableHideHints();
-            EnableMouseOver(images);
+            EnableMouseOver();
+            DisableCheckAnswer();
         }
 
-        function SetupGame(images) {
+        function SetupGame() {
             GameInstructions();
             DisableStartButton();
             EnableResetButton();
             DisplaySideBars();
-            DisableMouseOver(images);
+            DisableMouseOver();
             DisableShowHints()
             DisableHideHints();
+            EnableCheckAnswer();
+            BlurOtherImages(images[0]);
         }
 
         function HideSideBars() {
@@ -212,8 +216,16 @@
             document.getElementById("showHints").disabled = true;
         }
 
+        function DisableCheckAnswer() {
+            document.getElementById("checkAnswer").disabled = true;
+        }
+
         function EnableShowHints() {
             document.getElementById("showHints").disabled = false;
+        }
+
+        function EnableCheckAnswer() {
+            document.getElementById("checkAnswer").disabled = false;
         }
 
         function DisableHideHints() {
@@ -236,16 +248,16 @@
             this.nextElementSibling.style.color = "white";
         }
 
-        function BlurOtherImages(image) {
-            image.addEventListener("mouseenter", function () {
-                this.style.opacity = "0.3";
-            })
-            image.addEventListener("mouseleave", function () {
-                this.style.opacity = "1";
-            })
+        function BlurOtherImages(focusImage) {
+            for(image of images) {
+                if(image != focusImage) {
+                    image.style.opacity = "0.3";
+                }
+            }
+            
         }
 
-        function EnableMouseOver(images)
+        function EnableMouseOver()
         {
             
             for(var i=0;i<images.length;i++)
@@ -256,7 +268,7 @@
             }
         }
 
-        function DisableMouseOver(images)
+        function DisableMouseOver()
         {
             
             for(var i=0;i<images.length;i++)
