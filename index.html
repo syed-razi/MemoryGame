@@ -115,52 +115,61 @@
 
 
     <div class="buttonRow">
-        <button id="resetButton" onclick="Reset()" disabled=true>
+        <button id="resetButton" onclick="Reset(images)" disabled=true>
             Reset
         </button>
-        <button id="startButton" onclick="StartGame()">
+        <button id="startButton" onclick="StartGame(images)">
             Start Game
         </button>
-        <button id="showHints" onclick="EnableMouseOver(); DisableShowHints(); EnableHideHints()">
+        <button id="showHints" onclick="EnableMouseOver(images); DisableShowHints(); EnableHideHints()">
             Show Hints
         </button>
-        <button id="hideHints" onclick="DisableMouseOver(); DisableHideHints(); EnableShowHints()">
+        <button id="hideHints" onclick="DisableMouseOver(images); DisableHideHints(); EnableShowHints()">
             Hide Hints
         </button>
         
     </div>
     
     <script>
+        var images = document.getElementsByTagName("img");
         DisableShowHints();
-        EnableMouseOver();
-        var isRelationshipClicked = false;
-        var isNameClicked = false;
-        var relationshipClicked = "";
-        var nameClicked = "";
+        EnableMouseOver(images);
+        
+        function RunGame(images) {
+            var isRelationshipClicked = false;
+            var isNameClicked = false;
+            var relationshipClicked = "";
+            var nameClicked = "";
 
-        function handleGameClick()
-        {
-            
+            for(image of images) {
+                BlurOtherImages(image);
+
+            }
         }
 
-        function StartGame() {
-            GameInstructions();
-            DisableStartButton();
-            EnableResetButton();
-            DisplaySideBars();
-            DisableMouseOver();
-            DisableShowHints()
-            DisableHideHints();
+        function StartGame(images) {
+            SetupGame(images);
+            RunGame(images);
         }
 
-        function Reset() {
+        function Reset(images) {
             DisableResetButton();
             EnableStartButton();
             StartInstructions();
             HideSideBars();
             DisableShowHints();
             EnableHideHints();
-            EnableMouseOver();
+            EnableMouseOver(images);
+        }
+
+        function SetupGame(images) {
+            GameInstructions();
+            DisableStartButton();
+            EnableResetButton();
+            DisplaySideBars();
+            DisableMouseOver(images);
+            DisableShowHints()
+            DisableHideHints();
         }
 
         function HideSideBars() {
@@ -227,9 +236,18 @@
             this.nextElementSibling.style.color = "white";
         }
 
-        function EnableMouseOver()
+        function BlurOtherImages(image) {
+            image.addEventListener("mouseenter", function () {
+                this.style.opacity = "0.3";
+            })
+            image.addEventListener("mouseleave", function () {
+                this.style.opacity = "1";
+            })
+        }
+
+        function EnableMouseOver(images)
         {
-            var images = document.getElementsByTagName("img");
+            
             for(var i=0;i<images.length;i++)
             {
                 images[i].addEventListener("mouseenter", ShowRelationship);
@@ -238,9 +256,9 @@
             }
         }
 
-        function DisableMouseOver()
+        function DisableMouseOver(images)
         {
-            var images = document.getElementsByTagName("img");
+            
             for(var i=0;i<images.length;i++)
             {
                 images[i].removeEventListener("mouseenter", ShowRelationship);
